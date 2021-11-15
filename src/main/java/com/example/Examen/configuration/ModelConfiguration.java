@@ -1,4 +1,4 @@
-package com.example.Examen.controller;
+package com.example.Examen.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

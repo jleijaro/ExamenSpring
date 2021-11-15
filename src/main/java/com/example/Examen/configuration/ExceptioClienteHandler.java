@@ -17,4 +17,5 @@ public class ExceptioClienteHandler extends ResponseEntityExceptionHandler {
         return  handleExceptionInternal(ex, "Cliente not found",
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
+
 }

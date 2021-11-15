@@ -1,4 +1,4 @@
-package com.example.Examen.controller;
+package com.example.Examen.entity;
 
 import com.example.Examen.entity.Cliente;
 import com.example.Examen.entity.ItemPrestamo;

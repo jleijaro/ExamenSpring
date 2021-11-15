@@ -17,4 +17,8 @@ public class ClienteRepository {
     public Optional<Cliente> buscarCliente(String nombre){
         return listaCliente.stream().filter(cliente -> cliente.getNombre().equals(nombre)).findFirst();
     }
+
+    public Optional<Cliente> buscarClienteDni(String dni){
+        return listaCliente.stream().filter(cliente -> cliente.getDni().equals(dni)).findFirst();
+    }
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,21 +34,36 @@ public class controllerCliente {
         return ResponseEntity.ok(optionalCliente.get());
     }
 
-   @PostMapping
+   @PostMapping("/ingresarCliente")
     public void crearCliente(@RequestBody Cliente clientes){
         Cliente cliente = modelMapper.map(clientes, Cliente.class);
         clienteRepository.getListaCliente().add(cliente);
     }
 
-    @DeleteMapping
-    public void eliminarCliente(String cliente){
+    @DeleteMapping("/{cliente}")
+    public void eliminarCliente(@PathVariable("cliente") String cliente) throws ClienteInexistenteException{
+        //Optional<Cliente> optionalCliente = clienteRepository.buscarCliente(cliente);
+        //optionalCliente.ifPresent(value -> clienteRepository.getListaCliente().remove(value));
         Optional<Cliente> optionalCliente = clienteRepository.buscarCliente(cliente);
-        optionalCliente.ifPresent(value -> clienteRepository.getListaCliente().remove(value));
+        if(optionalCliente.isPresent()){
+            optionalCliente.ifPresent(value -> clienteRepository.getListaCliente().remove(value));
+        }
+        throw new ClienteInexistenteException();
     }
 
-    @PutMapping
-    public  void modificarCliente(Cliente cliente){
-        eliminarCliente(cliente.getNombre());
-        clienteRepository.getListaCliente().add(cliente);
+    @PutMapping("/actualizarCliente")
+    public void actualizarCliente(@RequestBody Cliente cliente) throws ClienteInexistenteException {
+        Optional<Cliente> optionalCliente= clienteRepository.buscarClienteDni(cliente.getDni());
+        if(optionalCliente.isPresent()){
+            for (Cliente c: clienteRepository.getListaCliente()) {
+                if(c.getDni().equals(cliente.getDni())){
+                    c.setDni(cliente.getDni());
+                    c.setNombre(cliente.getNombre());
+                    c.setDomicilio(cliente.getDomicilio());
+                }
+            }
+        }else{
+            throw new ClienteInexistenteException();
+        }
     }
 }
